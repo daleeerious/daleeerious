@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>THREE CARD GAME</title>
+    <style>
+     body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            background-image: url('https://img.freepik.com/premium-vector/oriental-vintage-background-with-indopersian-ornaments-royal-luxurious-wallpaper-green-color_619989-85.jpg');
+            background-color: rgb(13, 34, 18);
+            margin: 0;
+            padding: 20px;
+        }
+
+        h1 {
+            color: #941515;
+        }
+
+        p {
+            color: #ffffff;
+        }
+
+        button {
+            padding: 10px 20px;
+            font-size: 16px;
+            background-color: rgb(13, 34, 18);
+            color: #941515;
+            border: none;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background-color: #ececec;
+        }
+
+        #result {
+            margin-top: 20px;
+            background-color: rgb(13, 34, 18);
+            padding: 20px;
+            border-radius: 5px;
+            box-shadow: 0 0 10px rgb(245, 245, 245);
+            display: flex;
+           flex-direction: column;
+           align-items: center;
+           text-align: center;
+           gap: 15px;
+        }
+        .player-row {
+            display: flex;
+            justify-content: space-around;
+            margin-bottom: 20px;
+        }
+
+        .player-cards {
+            display: flex;
+            flex-direction: row;
+            align-items: center;
+            justify-content: center;
+            gap: 5px;
+        }
+
+        .card {
+            margin: 5px;
+            width: 100px; 
+            height: auto; 
+        }
+    </style>
+    <script>
+        function playGame() {
+            var suits = ['Hearts', 'Diamonds', 'Clubs', 'Spades'];
+            var values = {
+                '2': 2,
+                '3': 3,
+                '4': 4,
+                '5': 5,
+                '6': 6,
+                '7': 7,
+                '8': 8,
+                '9': 9,
+                '10': 10,
+                'Jack': 11,
+                'Queen': 12,
+                'King': 13,
+                'Ace': 14
+            };
+
+            function getRandomCard() {
+                var randomSuit = suits[Math.floor(Math.random() * suits.length)];
+                var randomValue = Object.keys(values)[Math.floor(Math.random() * Object.keys(values).length)];
+                var imagePath = 'Documents/ThreeCardGame/card_images/' + randomValue + '_of_' + randomSuit + '.png'; 
+                return {
+                    suit: randomSuit,
+                    value: randomValue,
+                    image: imagePath
+                };
+            }
+
+            var player1Cards = [getRandomCard(), getRandomCard(), getRandomCard()];
+            var player2Cards = [getRandomCard(), getRandomCard(), getRandomCard()];
+
+            var result = document.getElementById('result');
+            result.innerHTML = '';
+
+            function displayPlayerCards(playerCards) {
+                var playerDiv = document.createElement('div');
+                playerDiv.className = 'player-cards';
+                var total = 0;
+                playerCards.forEach(function (card) {
+                    var cardImage = document.createElement('img');
+                    cardImage.src = card.image;
+                    cardImage.className = 'card';
+                    playerDiv.appendChild(cardImage);
+                    total += values[card.value];
+                });
+                result.appendChild(playerDiv);
+                result.innerHTML += 'Player Total: ' + total + '<br><br>';
+                return total;
+            }
+
+            var player1Total = displayPlayerCards(player1Cards);
+            var player2Total = displayPlayerCards(player2Cards);
+            
+            if (player1Total > player2Total) {
+                result.innerHTML += 'Player 1 wins!';
+            } else if (player2Total > player1Total) {
+                result.innerHTML += 'Player 2 wins!';
+            } else {
+                result.innerHTML += 'It\'s a tie!';
+            }
+        }
+    </script>
+</head>
+<body>
+    <h1>THREE-CARD GAME</h1>
+    <button onclick="playGame()">Play</button>
+    <div id="result"></div>
+</body>
+</html>
